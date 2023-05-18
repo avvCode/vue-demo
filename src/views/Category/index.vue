@@ -1,13 +1,13 @@
 <script setup>
 import {getCategoryAPI} from '@/apis/category'
 import {onMounted, ref} from "vue";
-import {useRoute} from "vue-router";
+import {onBeforeRouteUpdate, useRoute} from "vue-router";
 import { getBannerAPI } from '@/apis/home'
 import GoodsItem from "@/views/Home/components/GoodsItem.vue";
 
 const categoryData = ref({})
 const route = useRoute()
-const getCategory = async (id) => {
+const getCategory = async (id = route.params.id) => {
     // 如何在setup中获取路由参数 useRoute() -> route 等价于this.$route
     const res = await getCategoryAPI(id)
     categoryData.value = res.result
@@ -24,8 +24,12 @@ const getBanner = async () => {
     bannerList.value = res.result
 }
 onMounted(() => {
-    getCategory(route.params.id)
+    getCategory()
     getBanner()
+})
+//在路由变化的时候，更新数据
+onBeforeRouteUpdate((to)=>{
+    getCategory(to.params.id)
 })
 </script>
 
