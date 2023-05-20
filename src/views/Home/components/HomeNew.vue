@@ -24,7 +24,7 @@
                         <p class="name">{{ item.name }}</p>
                         <p class="price">&yen;{{ item.price }}</p>
                     </RouterLink>
-                </li>
+                </li>`
             </ul>
         </template>
     </HomePanel>
