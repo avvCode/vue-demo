@@ -1,5 +1,6 @@
 // 对axios基础封装
 import axios from 'axios'
+import {ElMessage} from "element-plus";
 
 const http = axios.create({
     // headers:[],
@@ -15,6 +16,11 @@ http.interceptors.request.use(config => {
 
 // axios响应式拦截器
 http.interceptors.response.use(res => res.data, e => {
+    //统一错误提示
+    ElMessage({
+        type: 'warning',
+        message: e.response.data.msg
+    })
     return Promise.reject(e)
 })
 export default http;
