@@ -2,6 +2,7 @@
 import axios from 'axios'
 import {ElMessage} from "element-plus";
 import {useUserStore} from "@/stores/user";
+import router from "@/router";
 
 const http = axios.create({
     // headers:[],
@@ -28,6 +29,12 @@ http.interceptors.response.use(res => res.data, e => {
         type: 'warning',
         message: e.response.data.msg
     })
+    // 401 token失效处理
+    if(e.response.status === 401){
+        const userStore = useUserStore();
+        userStore.clearUserInfo()
+        router.push('/login')
+    }
     return Promise.reject(e)
 })
 export default http;
