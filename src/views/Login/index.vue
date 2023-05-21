@@ -1,5 +1,43 @@
 <script setup>
+    //表单校验
+    //1.准备表单对象
+    import {ref} from "vue";
 
+    const form = ref({
+        account:'',
+        password:'',
+        agree:'true'
+    })
+    //2.准备规则对象
+    const rules = {
+        account: [
+            {
+                required: true,
+                message: '用户名不能为空',
+                trigger: 'blur'
+            }
+        ],
+        password: [
+            {
+                required: true,
+                message: '密码不能为空',
+                trigger: 'blur'
+            },
+            {
+                min:6,
+                max:14,
+                message: '密码长度必须在6-14之间',
+                trigger: 'blur'
+            }
+        ],
+        agree:[
+            {
+                validator: (rule,value,callback) => {
+                    return value ? callback() : new Error('请先同意协议')
+                }
+            }
+        ]
+    }
 </script>
 
 
@@ -24,16 +62,16 @@
                 </nav>
                 <div class="account-box">
                     <div class="form">
-                        <el-form label-position="right" label-width="60px"
+                        <el-form :model="form" :rules="rules" label-position="right" label-width="60px"
                                  status-icon>
-                            <el-form-item  label="账户">
-                                <el-input/>
+                            <el-form-item  label="账户" prop="account">
+                                <el-input v-model="form.account"/>
                             </el-form-item>
-                            <el-form-item label="密码">
-                                <el-input/>
+                            <el-form-item label="密码" prop="password">
+                                <el-input v-model="form.password"/>
                             </el-form-item>
-                            <el-form-item label-width="22px">
-                                <el-checkbox  size="large">
+                            <el-form-item label-width="22px" prop="agree">
+                                <el-checkbox  size="large" v-model="form.agree">
                                     我已同意隐私条款和服务条款
                                 </el-checkbox>
                             </el-form-item>
