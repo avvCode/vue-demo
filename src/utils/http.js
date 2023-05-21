@@ -1,6 +1,7 @@
 // 对axios基础封装
 import axios from 'axios'
 import {ElMessage} from "element-plus";
+import {useUserStore} from "@/stores/user";
 
 const http = axios.create({
     // headers:[],
@@ -11,6 +12,12 @@ const http = axios.create({
 //拦截器
 // axios请求拦截器
 http.interceptors.request.use(config => {
+    // 1. 从 pinia获取Token
+    const userStore = useUserStore();
+    const token = userStore.userInfo.token
+    if(token){
+        config.headers.Authorization = `Bearer ${token}`
+    }
     return config
 }, e => Promise.reject(e))
 
