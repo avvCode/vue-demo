@@ -14,7 +14,7 @@ export const insertCartAPI = ({ skuId, count }) => {
 
 export const findNewCartListAPI = ()=>{
     return http({
-        url :'/method/cart'
+        url :'/member/cart'
     })
 }
 
